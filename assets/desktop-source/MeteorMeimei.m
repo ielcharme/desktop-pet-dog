@@ -27,20 +27,20 @@ typedef struct {
 
 static MMAnimation MMAnimationForMode(MMPetMode mode) {
     switch (mode) {
-        case MMPetModeIdle:      return (MMAnimation){14, 8, 1.4};
-        case MMPetModeWalkRight: return (MMAnimation){17, 8, 5.0};
-        case MMPetModeWalkLeft:  return (MMAnimation){16, 8, 5.0};
-        case MMPetModeWave:      return (MMAnimation){11, 8, 1.6};
-        case MMPetModeJump:      return (MMAnimation){18, 8, 1.5};
-        case MMPetModePlay:      return (MMAnimation){18, 8, 1.5};
-        case MMPetModeReview:    return (MMAnimation){14, 8, 1.4};
-        case MMPetModeCute:      return (MMAnimation){11, 8, 1.6};
-        case MMPetModeEat:       return (MMAnimation){12, 8, 1.6};
-        case MMPetModeBelly:     return (MMAnimation){13, 8, 1.6};
-        case MMPetModeRoll:      return (MMAnimation){13, 8, 1.6};
-        case MMPetModeApproach:  return (MMAnimation){18, 8, 1.5};
-        case MMPetModeStartup:   return (MMAnimation){15, 8, 4.0};
-        case MMPetModeExpectant: return (MMAnimation){18, 8, 1.5};
+        case MMPetModeIdle:      return (MMAnimation){14, 16, 2.8};
+        case MMPetModeWalkRight: return (MMAnimation){17, 16, 10.0};
+        case MMPetModeWalkLeft:  return (MMAnimation){16, 16, 10.0};
+        case MMPetModeWave:      return (MMAnimation){11, 16, 24.0 / 7.0};
+        case MMPetModeJump:      return (MMAnimation){18, 16, 22.5 / 7.0};
+        case MMPetModePlay:      return (MMAnimation){18, 16, 22.5 / 7.0};
+        case MMPetModeReview:    return (MMAnimation){14, 16, 2.8};
+        case MMPetModeCute:      return (MMAnimation){11, 16, 24.0 / 7.0};
+        case MMPetModeEat:       return (MMAnimation){12, 16, 3.2};
+        case MMPetModeBelly:     return (MMAnimation){13, 16, 24.0 / 7.0};
+        case MMPetModeRoll:      return (MMAnimation){13, 16, 24.0 / 7.0};
+        case MMPetModeApproach:  return (MMAnimation){18, 16, 22.5 / 7.0};
+        case MMPetModeStartup:   return (MMAnimation){15, 16, 60.0 / 7.0};
+        case MMPetModeExpectant: return (MMAnimation){18, 16, 22.5 / 7.0};
     }
 }
 
@@ -97,6 +97,8 @@ static CGFloat MMDisplayScaleForMode(MMPetMode mode) {
 }
 
 static const NSTimeInterval MMActionTransitionDuration = 0.62;
+static const NSInteger MMActionAtlasColumns = 16;
+static const CGFloat MMSubframeBlendWindow = 0.42;
 static const CGFloat MMPettingDistanceThreshold = 84.0;
 static const NSTimeInterval MMPettingResetInterval = 1.25;
 static const NSTimeInterval MMPettingCooldown = 12.0;
@@ -163,9 +165,13 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
 @property(nonatomic, strong) NSImage *actionAtlas;
 @property(nonatomic) NSInteger row;
 @property(nonatomic) NSInteger column;
+@property(nonatomic) NSInteger nextColumn;
+@property(nonatomic) CGFloat frameBlend;
 @property(nonatomic) BOOL flippedHorizontally;
 @property(nonatomic) NSInteger previousRow;
 @property(nonatomic) NSInteger previousColumn;
+@property(nonatomic) NSInteger previousNextColumn;
+@property(nonatomic) CGFloat previousFrameBlend;
 @property(nonatomic) BOOL previousFlippedHorizontally;
 @property(nonatomic) NSTimeInterval transitionStartedAt;
 @property(nonatomic, copy) void (^onClick)(void);
@@ -193,6 +199,7 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
         _atlas = atlas;
         _actionAtlas = actionAtlas;
         _row = -1;
+        _nextColumn = 0;
         _previousRow = -1;
         self.wantsLayer = YES;
         self.layer.backgroundColor = NSColor.clearColor.CGColor;
@@ -259,6 +266,8 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
     if (_row >= 0) {
         _previousRow = _row;
         _previousColumn = _column;
+        _previousNextColumn = _nextColumn;
+        _previousFrameBlend = _frameBlend;
         _previousFlippedHorizontally = _flippedHorizontally;
         _transitionStartedAt = NSProcessInfo.processInfo.systemUptime;
     }
@@ -268,6 +277,18 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
 
 - (void)setColumn:(NSInteger)column {
     _column = column;
+    _nextColumn = column;
+    _frameBlend = 0;
+    self.needsDisplay = YES;
+}
+
+- (void)setNextColumn:(NSInteger)nextColumn {
+    _nextColumn = nextColumn;
+    self.needsDisplay = YES;
+}
+
+- (void)setFrameBlend:(CGFloat)frameBlend {
+    _frameBlend = MIN(1.0, MAX(0.0, frameBlend));
     self.needsDisplay = YES;
 }
 
@@ -285,8 +306,9 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
     NSImage *sourceAtlas = usesActionAtlas ? self.actionAtlas : self.atlas;
     NSInteger sourceRow = usesActionAtlas ? row - 11 : row;
     NSInteger sourceRows = usesActionAtlas ? 8 : 11;
-    if (column < 0 || column >= 8 || sourceRow < 0 || sourceRow >= sourceRows) return;
-    CGFloat cellWidth = usesActionAtlas ? sourceAtlas.size.width / 8.0 : 192.0;
+    NSInteger sourceColumns = usesActionAtlas ? MMActionAtlasColumns : 8;
+    if (column < 0 || column >= sourceColumns || sourceRow < 0 || sourceRow >= sourceRows) return;
+    CGFloat cellWidth = usesActionAtlas ? sourceAtlas.size.width / (CGFloat)MMActionAtlasColumns : 192.0;
     CGFloat cellHeight = usesActionAtlas ? sourceAtlas.size.height / 8.0 : 208.0;
     if (cellWidth <= 0 || cellHeight <= 0) return;
     CGFloat sourceY = sourceAtlas.size.height - ((CGFloat)sourceRow + 1) * cellHeight;
@@ -323,7 +345,13 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
         [self drawFrameAtRow:self.previousRow
                      column:self.previousColumn
                     flipped:self.previousFlippedHorizontally
-                   fraction:1.0 - progress];
+                   fraction:(1.0 - self.previousFrameBlend) * (1.0 - progress)];
+        if (self.previousNextColumn != self.previousColumn && self.previousFrameBlend > 0) {
+            [self drawFrameAtRow:self.previousRow
+                         column:self.previousNextColumn
+                        flipped:self.previousFlippedHorizontally
+                       fraction:self.previousFrameBlend * (1.0 - progress)];
+        }
         [self drawFrameAtRow:self.row column:0 flipped:self.flippedHorizontally fraction:progress];
         self.needsDisplay = YES;
     } else {
@@ -331,7 +359,13 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
         [self drawFrameAtRow:self.row
                      column:self.column
                     flipped:self.flippedHorizontally
-                   fraction:1.0];
+                   fraction:1.0 - self.frameBlend];
+        if (self.nextColumn != self.column && self.frameBlend > 0) {
+            [self drawFrameAtRow:self.row
+                         column:self.nextColumn
+                        flipped:self.flippedHorizontally
+                       fraction:self.frameBlend];
+        }
     }
 }
 
@@ -587,7 +621,7 @@ static const double MMJumpDuration = 1.8;
         [self scheduleNextWellnessFrom:_lastTick];
         [self scheduleNextRollFrom:_lastTick];
         [self scheduleIdleRoutineFrom:_lastTick];
-        _timer = [NSTimer timerWithTimeInterval:1.0 / 30.0
+        _timer = [NSTimer timerWithTimeInterval:1.0 / 60.0
                                         target:self
                                       selector:@selector(tick:)
                                       userInfo:nil
@@ -893,14 +927,37 @@ static const double MMJumpDuration = 1.8;
     MMAnimation animation = MMAnimationForMode(self.mode);
     self.petView.row = animation.row;
     double activeElapsed = MAX(0.0, self.animationElapsed);
-    NSInteger column;
+    NSInteger column = 0;
+    NSInteger nextColumn = 0;
+    CGFloat blend = 0;
     if (MMAnimationLoops(self.mode)) {
-        column = ((NSInteger)floor(activeElapsed * animation.fps)) % animation.frames;
+        double position = activeElapsed * animation.fps;
+        double integral = floor(position);
+        column = ((NSInteger)integral) % animation.frames;
+        nextColumn = (column + 1) % animation.frames;
+        double phase = position - integral;
+        double start = 1.0 - MMSubframeBlendWindow;
+        blend = (CGFloat)MIN(1.0, MAX(0.0, (phase - start) / MMSubframeBlendWindow));
+        blend = blend * blend * (3.0 - 2.0 * blend);
     } else {
         double frameElapsed = MAX(0.0, activeElapsed - MMActionEntryHoldDuration);
-        column = MIN(animation.frames - 1, (NSInteger)floor(frameElapsed * animation.fps));
+        double position = frameElapsed * animation.fps;
+        if (activeElapsed <= MMActionEntryHoldDuration || position >= animation.frames - 1) {
+            column = MIN(animation.frames - 1, (NSInteger)floor(position));
+            nextColumn = column;
+        } else {
+            double integral = floor(position);
+            column = MIN(animation.frames - 1, (NSInteger)integral);
+            nextColumn = MIN(animation.frames - 1, column + 1);
+            double phase = position - integral;
+            double start = 1.0 - MMSubframeBlendWindow;
+            blend = (CGFloat)MIN(1.0, MAX(0.0, (phase - start) / MMSubframeBlendWindow));
+            blend = blend * blend * (3.0 - 2.0 * blend);
+        }
     }
     self.petView.column = column;
+    self.petView.nextColumn = nextColumn;
+    self.petView.frameBlend = blend;
     self.petView.flippedHorizontally = NO;
 }
 
@@ -946,7 +1003,8 @@ static const double MMJumpDuration = 1.8;
     self.petView.flippedHorizontally = NO;
     if (lifted) {
         self.petView.row = 18;
-        self.petView.column = ((NSInteger)floor(NSProcessInfo.processInfo.systemUptime * 1.5) % 8);
+        MMAnimation animation = MMAnimationForMode(MMPetModeApproach);
+        self.petView.column = ((NSInteger)floor(NSProcessInfo.processInfo.systemUptime * animation.fps) % animation.frames);
     } else {
         self.petView.row = 14;
         self.petView.column = 0;
@@ -1053,7 +1111,7 @@ static const double MMJumpDuration = 1.8;
     x = round(x * screen.backingScaleFactor) / screen.backingScaleFactor;
     y = round(y * screen.backingScaleFactor) / screen.backingScaleFactor;
     self.petView.row = 18;
-    self.petView.column = MIN(7, (NSInteger)floor(progress * 8.0));
+    self.petView.column = MIN(MMActionAtlasColumns - 1, (NSInteger)floor(progress * MMActionAtlasColumns));
     self.petView.flippedHorizontally = NO;
     [self.panel setFrameOrigin:NSMakePoint(x, y)];
 
@@ -1533,7 +1591,7 @@ int main(int argc, const char *argv[]) {
             return 0;
         }
         if ([NSProcessInfo.processInfo.arguments containsObject:@"--print-behavior-config"]) {
-            printf("single_instance=true fixed_pet_width=97 enlarged_action_scale=1.5 walk_action_scale=1.5 roll_action_scale=1.5 enlarged_actions=walk-left-walk-right-roll walk_fps=5.0 walk_speed=42 idle_fps=1.4 play_fps=1.5 custom_action_fps=1.4-5.0 custom_action_rows=11-18 custom_action_source=keyed-live-video video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant action_atlas_dimensions=3072x3328 action_cell_pixels=384x416 action_atlas_lossless=true source_video_resolution=720x720 render_interpolation=high illustrated_fallback=false action_transition=tail-to-head-crossfade transition_seconds=0.62 endpoint_completion=entry-hold-exit-hold-clamped-last-frame roll_exit_hold_seconds=2.2 roll_action_duration_seconds=6.76 double_click=cold-joke petting=expectant petting_distance_px=84 petting_cooldown_seconds=12 meal_trigger=scheduled-only meal_schedule_local=08:30,12:00,19:00 meal_duration_seconds=1800 automatic_behavior=calm automatic_roll=periodic-and-idle-routine roll_interval_seconds=300-600 roll_active_only=true idle_routine_after_seconds=180 idle_routine=walk-left-head-tilt-roll-walk-right idle_routine_repeat_seconds=180 corner_hide_seconds=300 hover_reveal=expectant-to-corner focus_protection=typing-fullscreen-media cinema_mode=manual wellness_interval_seconds=3600 wellness_display_seconds=10 work_active_window_seconds=300 right_click_quit=temporary left_source=keyed-live-video right_source=keyed-live-video-with-real-tail-completion approach_trigger=expectant upward_drag=expectant drop_action=expectant\n");
+            printf("single_instance=true fixed_pet_width=97 enlarged_action_scale=1.5 walk_action_scale=1.5 roll_action_scale=1.5 enlarged_actions=walk-left-walk-right-roll walk_fps=10.0 walk_speed=42 idle_fps=2.8 play_fps=3.21 custom_action_fps=2.8-10.0 custom_action_frames=16 custom_action_rows=11-18 custom_action_source=keyed-live-video video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant action_atlas_dimensions=6144x3328 action_cell_pixels=384x416 action_atlas_lossless=true source_video_resolution=720x720 render_fps=60 render_interpolation=high temporal_interpolation=short-window-adjacent-frame-crossfade temporal_blend_window=0.42 illustrated_fallback=false action_transition=tail-to-head-crossfade transition_seconds=0.62 endpoint_completion=entry-hold-exit-hold-clamped-last-frame roll_exit_hold_seconds=2.2 roll_action_duration_seconds=6.76 double_click=cold-joke petting=expectant petting_distance_px=84 petting_cooldown_seconds=12 meal_trigger=scheduled-only meal_schedule_local=08:30,12:00,19:00 meal_duration_seconds=1800 automatic_behavior=calm automatic_roll=periodic-and-idle-routine roll_interval_seconds=300-600 roll_active_only=true idle_routine_after_seconds=180 idle_routine=walk-left-head-tilt-roll-walk-right idle_routine_repeat_seconds=180 corner_hide_seconds=300 hover_reveal=expectant-to-corner focus_protection=typing-fullscreen-media cinema_mode=manual wellness_interval_seconds=3600 wellness_display_seconds=10 work_active_window_seconds=300 right_click_quit=temporary left_source=keyed-live-video right_source=keyed-live-video-with-real-tail-completion approach_trigger=expectant upward_drag=expectant drop_action=expectant\n");
             return 0;
         }
         NSApplication *app = NSApplication.sharedApplication;

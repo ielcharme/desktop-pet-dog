@@ -25,20 +25,20 @@ The prebuilt arm64 app is stored as `assets/desktop/妹妹.app.zip`, so macOS do
 The desktop app loads two atlases:
 
 - `spritesheet.webp`: the validated Codex `1536×2288` atlas
-- `video-actions.webp`: a desktop-only lossless `3072×3328` atlas with `384×416` cells, containing eight complete eight-frame rows keyed from the latest `720×720` real-dog green-screen footage: head tilt, eating, rolling, waiting, startup, walking left, walking right, and expectant
+- `video-actions.webp`: a desktop-only lossless `6144×3328` atlas with `384×416` cells, containing eight complete 16-frame rows keyed from the latest `720×720` real-dog green-screen footage: head tilt, eating, rolling, waiting, startup, walking left, walking right, and expectant
 
 Behavior:
 
 - transparent floating pet near the bottom of the current screen
 - autonomous real-video left/right walking and waiting, plus head-tilt greeting, expectant-based edge emergence and upward drag/drop, startup, review waiting, scheduled eating, and periodic rolling/belly-up states
 - clicking **和妹妹玩** chooses head tilt, rolling, or expectant; the paw menu can directly play head tilt, rolling, waiting, startup, and expectant, while **叫妹妹过来** uses the expectant row
-- custom actions use source-appropriate `1.4–5.0 fps` timing; the source MP4 pixels supply the final real-dog appearance and motion, with the green set removed and the eating bowl retained
+- custom actions use 16 source frames with playback rates adjusted to preserve the previous action durations; the source MP4 pixels supply the final real-dog appearance and motion, with the green set removed and the eating bowl retained
 - all visible desktop modes and direct drag/edge frames resolve to live-video rows `11–18`; the illustrated Codex atlas remains bundled for Codex compatibility but is never selected as a desktop fallback
-- every non-looping action holds its first frame, reaches and holds its last frame without wrapping, then blends that terminal frame into frame 0 of the incoming action for `0.62 s`
+- the app refreshes at `60 Hz` and uses a short eased adjacent-frame blend during the final `42%` of each frame interval; every non-looping action still holds its first frame, reaches and holds its last frame without wrapping, then blends the displayed terminal state into frame 0 of the incoming action for `0.62 s`
 - uses the repository's small resting width of `97 px`; left/right walking and belly/rolling expand smoothly to `1.5×`, preserving the atlas `192:208` aspect ratio and keeping the full body visible
 - renders the desktop action atlas with high-quality interpolation from lossless 2× cells, avoiding runtime upscaling at `1.5×` Retina size and preserving the useful detail available in the `720×720` source clips
 - permits only one LaunchServices instance through `LSMultipleInstancesProhibited`; launch with `open` and never `open -n`
-- uses relaxed motion timing: real-video directional walking is `5.0 fps` at `42 pt/s`, real-video waiting is `1.4 fps`, autonomous walking is selected only about 12 percent of ordinary decisions, and most decisions choose a `10–22 s` idle period
+- uses relaxed motion timing: the 16-frame real-video directional walk is `10.0 fps` at `42 pt/s`, the 16-frame waiting loop is `2.8 fps`, the total action durations remain unchanged, autonomous walking is selected only about 12 percent of ordinary decisions, and most decisions choose a `10–22 s` idle period
 - renders walking-left and walking-right from their own keyed real-video body-motion rows, with tracked baseline normalization and backing-pixel-aligned window movement; because every supplied right-walk frame clips the tail, only the missing tail is completed from mirrored real-tail pixels in the paired left-walk source
 - upward dragging and the gravity drop use the expectant/approach row while following the pointer and returning to the screen baseline
 - during recent computer activity, one randomized timer plays the rolling/belly-up row about every `5–10 minutes`, only from an idle/review state; each roll plays all source frames once, holds the terminal belly-up pose for `2.2 s`, and lasts about `6.8 s` total without looping; direct menu and single-click triggers remain available and reset the timer

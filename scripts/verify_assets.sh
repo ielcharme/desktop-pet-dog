@@ -105,14 +105,14 @@ verify_app() {
   version="$(/usr/bin/plutil -extract CFBundleShortVersionString raw -o - "$plist")"
   architecture="$(/usr/bin/file "$executable")"
   [[ "$bundle_id" == "com.lucie.meteor-meimei" ]] || { echo "Unexpected bundle id: $bundle_id" >&2; return 1; }
-  [[ "$version" == "2.9" ]] || { echo "Unexpected app version: $version" >&2; return 1; }
+  [[ "$version" == "3.0" ]] || { echo "Unexpected app version: $version" >&2; return 1; }
   single_instance="$(/usr/bin/plutil -extract LSMultipleInstancesProhibited raw -o - "$plist")"
   [[ "$single_instance" == "true" ]] || { echo "Desktop app does not prohibit multiple instances." >&2; return 1; }
   [[ "$architecture" == *"arm64"* ]] || { echo "Desktop app is not arm64: $architecture" >&2; return 1; }
   pet_size="$("$executable" --print-pet-size)"
   [[ "$pet_size" == "97x105.08" ]] || { echo "Unexpected desktop pet size: $pet_size" >&2; return 1; }
   action_atlas_size="$("$executable" --print-action-atlas-size)"
-  [[ "$action_atlas_size" == "3072x3328" ]] || { echo "Unexpected runtime action atlas size: $action_atlas_size" >&2; return 1; }
+  [[ "$action_atlas_size" == "6144x3328" ]] || { echo "Unexpected runtime action atlas size: $action_atlas_size" >&2; return 1; }
   dimensions="$(/usr/bin/sips -g pixelWidth -g pixelHeight "$atlas" 2>/dev/null)"
   width="$(printf '%s\n' "$dimensions" | /usr/bin/awk '/pixelWidth:/ {print $2}')"
   height="$(printf '%s\n' "$dimensions" | /usr/bin/awk '/pixelHeight:/ {print $2}')"
@@ -120,9 +120,37 @@ verify_app() {
   dimensions="$(/usr/bin/sips -g pixelWidth -g pixelHeight "$action_atlas" 2>/dev/null)"
   width="$(printf '%s\n' "$dimensions" | /usr/bin/awk '/pixelWidth:/ {print $2}')"
   height="$(printf '%s\n' "$dimensions" | /usr/bin/awk '/pixelHeight:/ {print $2}')"
-  [[ "$width" == "3072" && "$height" == "3328" ]] || { echo "Unexpected desktop action atlas size: ${width}x${height}" >&2; return 1; }
+  [[ "$width" == "6144" && "$height" == "3328" ]] || { echo "Unexpected desktop action atlas size: ${width}x${height}" >&2; return 1; }
   behavior_config="$("$executable" --print-behavior-config)"
-  [[ "$behavior_config" == *"single_instance=true"* && "$behavior_config" == *"fixed_pet_width=97"* && "$behavior_config" == *"enlarged_action_scale=1.5"* && "$behavior_config" == *"walk_action_scale=1.5"* && "$behavior_config" == *"roll_action_scale=1.5"* && "$behavior_config" == *"enlarged_actions=walk-left-walk-right-roll"* && "$behavior_config" == *"custom_action_rows=11-18"* && "$behavior_config" == *"custom_action_source=keyed-live-video"* && "$behavior_config" == *"video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant"* && "$behavior_config" == *"action_atlas_dimensions=3072x3328"* && "$behavior_config" == *"action_cell_pixels=384x416"* && "$behavior_config" == *"action_atlas_lossless=true"* && "$behavior_config" == *"source_video_resolution=720x720"* && "$behavior_config" == *"render_interpolation=high"* && "$behavior_config" == *"illustrated_fallback=false"* && "$behavior_config" == *"action_transition=tail-to-head-crossfade"* && "$behavior_config" == *"transition_seconds=0.62"* && "$behavior_config" == *"endpoint_completion=entry-hold-exit-hold-clamped-last-frame"* && "$behavior_config" == *"roll_exit_hold_seconds=2.2"* && "$behavior_config" == *"roll_action_duration_seconds=6.76"* && "$behavior_config" == *"double_click=cold-joke"* && "$behavior_config" == *"petting=expectant"* && "$behavior_config" == *"petting_distance_px=84"* && "$behavior_config" == *"petting_cooldown_seconds=12"* && "$behavior_config" == *"meal_trigger=scheduled-only"* && "$behavior_config" == *"meal_schedule_local=08:30,12:00,19:00"* && "$behavior_config" == *"meal_duration_seconds=1800"* && "$behavior_config" == *"automatic_behavior=calm"* && "$behavior_config" == *"automatic_roll=periodic-and-idle-routine"* && "$behavior_config" == *"roll_interval_seconds=300-600"* && "$behavior_config" == *"roll_active_only=true"* && "$behavior_config" == *"idle_routine_after_seconds=180"* && "$behavior_config" == *"idle_routine=walk-left-head-tilt-roll-walk-right"* && "$behavior_config" == *"idle_routine_repeat_seconds=180"* && "$behavior_config" == *"corner_hide_seconds=300"* && "$behavior_config" == *"hover_reveal=expectant-to-corner"* && "$behavior_config" == *"focus_protection=typing-fullscreen-media"* && "$behavior_config" == *"cinema_mode=manual"* && "$behavior_config" == *"wellness_interval_seconds=3600"* && "$behavior_config" == *"wellness_display_seconds=10"* && "$behavior_config" == *"work_active_window_seconds=300"* && "$behavior_config" == *"right_click_quit=temporary"* && "$behavior_config" == *"left_source=keyed-live-video"* && "$behavior_config" == *"right_source=keyed-live-video-with-real-tail-completion"* && "$behavior_config" == *"approach_trigger=expectant"* && "$behavior_config" == *"upward_drag=expectant"* && "$behavior_config" == *"drop_action=expectant"* ]] || { echo "Unexpected behavior config: $behavior_config" >&2; return 1; }
+  local required_behavior_tokens=(
+    "single_instance=true" "fixed_pet_width=97"
+    "enlarged_action_scale=1.5" "walk_action_scale=1.5" "roll_action_scale=1.5"
+    "enlarged_actions=walk-left-walk-right-roll"
+    "walk_fps=10.0" "idle_fps=2.8" "custom_action_fps=2.8-10.0" "custom_action_frames=16"
+    "custom_action_rows=11-18" "custom_action_source=keyed-live-video"
+    "video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant"
+    "action_atlas_dimensions=6144x3328" "action_cell_pixels=384x416" "action_atlas_lossless=true"
+    "source_video_resolution=720x720" "render_fps=60" "render_interpolation=high"
+    "temporal_interpolation=short-window-adjacent-frame-crossfade" "temporal_blend_window=0.42"
+    "illustrated_fallback=false" "action_transition=tail-to-head-crossfade" "transition_seconds=0.62"
+    "endpoint_completion=entry-hold-exit-hold-clamped-last-frame"
+    "roll_exit_hold_seconds=2.2" "roll_action_duration_seconds=6.76"
+    "double_click=cold-joke" "petting=expectant" "petting_distance_px=84" "petting_cooldown_seconds=12"
+    "meal_trigger=scheduled-only" "meal_schedule_local=08:30,12:00,19:00" "meal_duration_seconds=1800"
+    "automatic_behavior=calm" "automatic_roll=periodic-and-idle-routine"
+    "roll_interval_seconds=300-600" "roll_active_only=true"
+    "idle_routine_after_seconds=180" "idle_routine=walk-left-head-tilt-roll-walk-right"
+    "idle_routine_repeat_seconds=180" "corner_hide_seconds=300" "hover_reveal=expectant-to-corner"
+    "focus_protection=typing-fullscreen-media" "cinema_mode=manual"
+    "wellness_interval_seconds=3600" "wellness_display_seconds=10" "work_active_window_seconds=300"
+    "right_click_quit=temporary" "left_source=keyed-live-video"
+    "right_source=keyed-live-video-with-real-tail-completion"
+    "approach_trigger=expectant" "upward_drag=expectant" "drop_action=expectant"
+  )
+  local token
+  for token in "${required_behavior_tokens[@]}"; do
+    [[ "$behavior_config" == *"$token"* ]] || { echo "Behavior config missing '$token': $behavior_config" >&2; return 1; }
+  done
   /usr/bin/codesign --verify --deep --strict "$app"
   echo "OK app: $app (pet ${pet_size})"
 }

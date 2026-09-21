@@ -40,6 +40,7 @@ This repository contains:
 - Walks left and right, rests, greets, plays, and asks for attention at a relaxed pace.
 - Includes eight desktop-only actions cut directly from the latest real border-collie green-screen footage: head tilt, eating, rolling over, waiting, startup, walking left, walking right, and an expectant look.
 - Greeting uses the head-tilt clip; edge emergence and upward dragging use the expectant/approach clip; focused review uses waiting. Startup plays once when the app opens.
+- Uses 16 real-video frames per action, refreshes at 60 Hz, and blends adjacent frames briefly before each change, while preserving the same calm action duration.
 - Changes actions through completed endpoint holds and a gentle crossfade instead of a hard cut.
 - Single-click Meimei for a playful action; double-click her to hear an offline cold joke immediately.
 - Move the pointer back and forth over her body to pet her; after recognizing the petting gesture, she responds with her expectant “coming closer” action. A short cooldown prevents accidental repeats.
@@ -164,9 +165,9 @@ The Skill verifies the package and shows the resolved destination before writing
 The desktop app keeps Meimei at the repository's small `97 px` resting width, with height derived from the original `192:208` aspect ratio. Walking left, walking right, and rolling all expand smoothly to `1.5×` from the bottom center so her complete body stays visible. It also prohibits multiple running instances, so opening Meimei again reuses the one already on screen.
 
 - Leftward and rightward movement keep their own source-body motion. Because every frame of the supplied right-walk clip cuts off the tail, only the missing tail is completed frame by frame from mirrored real-tail pixels in the paired left-walk clip.
-- Walking runs at `5.0 fps`, with tracked baseline normalization and backing-pixel alignment to reduce small-size jitter.
-- Real-dog waiting runs at `1.4 fps`; other non-walking actions remain deliberately calm.
-- The eight real-dog actions run at `1.4–5.0 fps` and live in a separate desktop-only atlas. It uses lossless WebP at `3072×3328`, with `384×416` cells—twice the former pixel dimensions—and high-quality interpolation. This keeps all useful detail available from the original `720×720` MP4 files, including at `1.5×` Retina rendering. The validated Codex `8×11` atlas remains unchanged.
+- Walking now uses 16 source frames at `10.0 fps`, with tracked baseline normalization and backing-pixel alignment to reduce small-size jitter without making the walk faster.
+- Real-dog waiting uses 16 source frames at `2.8 fps`; other non-walking actions keep their previous relaxed duration.
+- The eight real-dog actions now use 16 frames each and live in a separate desktop-only atlas. It uses lossless WebP at `6144×3328`, with `384×416` cells and high-quality interpolation. The app refreshes at `60 Hz` and applies a short, eased adjacent-frame blend during only the final `42%` of each frame interval, softening jumps without turning the dog into a constant double image. The validated Codex `8×11` atlas remains unchanged.
 - One-shot actions hold their first and last frames instead of wrapping abruptly back to frame 1. Every action change then blends the outgoing terminal frame into the incoming head frame for `0.62 s` before the new animation continues.
 - Autonomous walks and playful actions are deliberately uncommon, with `10–22 s` resting periods between most decisions.
 
@@ -295,6 +296,7 @@ No open-source license is currently attached. Public visibility does not grant p
 - 用松弛的节奏左右散步、休息、打招呼、玩耍和期待互动。
 - 直接从最新真实边牧绿幕视频中抠出八个桌面专属动作：歪头杀、吃饭、打滚、等待、开机启动、向左走、向右走和一脸期待。
 - 打招呼使用歪头杀；从边框跳出和向上拖动使用“一脸期待／靠近你”；专注查看使用等待。App 打开时会完整播放一次开机启动。
+- 每个真实动作由 8 个采样帧升级为 16 个，桌面刷新率提高到 60 Hz，并在相邻帧切换前加入短暂缓动；动作总时长与原来的松弛节奏不变。
 - 不同动作会先完整保留首帧和尾帧，再使用柔和的“上一动作尾帧 → 下一动作首帧”过渡，不再硬切。
 - 单击妹妹会触发互动动作；双击妹妹会马上讲一个本地冷笑话。
 - 在妹妹身上来回移动鼠标，就像抚摸她一样；识别到抚摸后会播放“一脸期待／靠近你”，并设有短暂冷却，避免误触后连续播放。
@@ -419,9 +421,9 @@ Skill 会先验证资源，并在写入仓库外的位置之前显示实际安�
 桌面 App 的待机尺寸仍是仓库同款的小尺寸：宽 `97 px`，高度按原始 `192:208` 比例计算。向左走、向右走和打滚都平滑放大到 `1.5 倍`，并继续以底部中央为锚点，保证全身完整。App 同时禁止重复运行；再次打开妹妹时，会继续使用屏幕上唯一的那一只。
 
 - 向左走和向右走保留各自素材中的身体动作。由于成片8每一帧都截断了尾巴，程序只使用成片7中真实尾巴的镜像画面，逐帧补齐成片8缺失的尾巴。
-- 步行速度为 `5.0 fps`，并用基线跟踪和屏幕像素对齐减少小尺寸移动时的顿挫。
-- 真实等待动作使用 `1.4 fps`；其他非步行动作也保持比较松弛的节奏。
-- 八个真实狗狗动作使用 `1.4–5.0 fps`，放在单独的桌面版动作图集中。图集采用无损 WebP，尺寸为 `3072×3328`，每格 `384×416`，像素尺寸是旧版的 2 倍，并使用高质量插值；这足以保留原始 `720×720` 成片在 `1.5 倍` Retina 显示时能呈现的有效细节。已验证的 Codex `8×11` 图集保持不变。
+- 左右走路升级为 16 个源视频采样帧，以 `10.0 fps` 播放，并继续使用基线跟踪和屏幕像素对齐；总时长没有加快。
+- 真实等待动作升级为 16 帧、`2.8 fps`；其他非步行动作同样增加帧数，但保持原来的松弛时长。
+- 八个真实狗狗动作全部升级为每个 16 帧，放在单独的无损 WebP 桌面图集中。图集尺寸为 `6144×3328`，每格 `384×416`。App 以 `60 Hz` 刷新，只在每个帧间隔最后 `42%` 加入短暂缓动混合，减轻跳帧，同时避免小狗长时间出现重影。已验证的 Codex `8×11` 图集保持不变。
 - 单次动作会在第 1 帧和最后 1 帧短暂停留，不会在结束时突然跳回开头；换动作时再用 `0.62 秒`从上一动作尾帧平滑过渡到下一动作首帧。
 - 自动散步和玩耍会少很多，多数判断之间会先待机 `10–22 秒`，整体更像一只安静生活在屏幕上的小狗。
 

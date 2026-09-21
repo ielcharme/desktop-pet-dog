@@ -20,7 +20,7 @@ from PIL import Image, ImageDraw, ImageFilter, ImageOps
 
 CELL_WIDTH = 384
 CELL_HEIGHT = 416
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 16
 ACTION_ORDER = (
     "head-tilt",
     "eating",
@@ -32,14 +32,14 @@ ACTION_ORDER = (
     "expectant",
 )
 ACTION_FPS = {
-    "head-tilt": 1.6,
-    "eating": 1.6,
-    "roll": 1.6,
-    "waiting": 1.4,
-    "startup": 4.0,
-    "walk-left": 5.0,
-    "walk-right": 5.0,
-    "expectant": 1.5,
+    "head-tilt": 24.0 / 7.0,
+    "eating": 3.2,
+    "roll": 24.0 / 7.0,
+    "waiting": 2.8,
+    "startup": 60.0 / 7.0,
+    "walk-left": 10.0,
+    "walk-right": 10.0,
+    "expectant": 22.5 / 7.0,
 }
 
 
@@ -658,7 +658,7 @@ def write_previews(
         y = row * transition_row_height
         transition_draw.text(
             (8, y + 6),
-            f"{action} tail → {next_action} head · 0.42 s crossfade",
+            f"{action} tail → {next_action} head · 0.62 s crossfade",
             fill="white",
         )
         tail = action_cells[action][-1]
@@ -720,12 +720,12 @@ def main() -> None:
 
     sources = [
         ActionSource("head-tilt", args.head_tilt),
-        ActionSource("eating", args.eating, 3.00, 0.20),
+        ActionSource("eating", args.eating, 3.00, 1.40 / (FRAMES_PER_ACTION - 1)),
         ActionSource("roll", args.roll),
         ActionSource("waiting", args.waiting),
-        ActionSource("startup", args.startup, 0.20, 0.25),
-        ActionSource("walk-left", args.walk_left, 4.35, 0.075, normalization="tracked-baseline"),
-        ActionSource("walk-right", args.walk_right, 3.35, 0.20, normalization="tracked-tail-complete"),
+        ActionSource("startup", args.startup, 0.20, 1.75 / (FRAMES_PER_ACTION - 1)),
+        ActionSource("walk-left", args.walk_left, 4.35, 0.625 / (FRAMES_PER_ACTION - 1), normalization="tracked-baseline"),
+        ActionSource("walk-right", args.walk_right, 3.35, 1.40 / (FRAMES_PER_ACTION - 1), normalization="tracked-tail-complete"),
         ActionSource("expectant", args.expectant),
     ]
     for source in sources:
@@ -741,7 +741,7 @@ def main() -> None:
         "walk-right-tail-donor",
         args.walk_left,
         4.35,
-        0.075,
+        0.625 / (FRAMES_PER_ACTION - 1),
         normalization="tail-donor",
     )
     donor_paths, donor_times = extract_frames(
@@ -911,17 +911,17 @@ def main() -> None:
         },
         "visualQa": {
             "verdict": "pass",
-            "note": "All eight rows use the latest 720x720 real-dog footage, keep the complete body inside every lossless 384x416 cell, preserve ordered motion at 97 px display width, and include dedicated loop-transition and source-to-tail-completion QA sheets.",
+            "note": "All eight 16-frame rows use the latest 720x720 real-dog footage, keep the complete body inside every lossless 384x416 cell, preserve ordered motion at 97 px display width, and include dedicated loop-transition and source-to-tail-completion QA sheets.",
         },
     }
     args.validation.parent.mkdir(parents=True, exist_ok=True)
     args.validation.write_text(json.dumps(validation, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
-    if atlas.size != (3072, 3328):
+    if atlas.size != (6144, 3328):
         raise RuntimeError(f"Unexpected atlas size: {atlas.size}")
     if validation["alpha"]["transparentRgbResidue"] != 0:
         raise RuntimeError("Transparent RGB residue remains in the action atlas.")
-    if validation["alpha"]["nonEmptyCells"] != 64:
+    if validation["alpha"]["nonEmptyCells"] != 128:
         raise RuntimeError("One or more action cells are empty.")
     clipped = [
         f"{report['action']}:{index}"
