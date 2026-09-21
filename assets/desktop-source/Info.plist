@@ -19,9 +19,9 @@
     <key>CFBundleSignature</key>
     <string>MMPT</string>
     <key>CFBundleShortVersionString</key>
-	<string>3.0</string>
+	<string>3.1</string>
     <key>CFBundleVersion</key>
-	<string>21</string>
+	<string>22</string>
     <key>LSMultipleInstancesProhibited</key>
     <true/>
     <key>LSMinimumSystemVersion</key>

@@ -300,7 +300,8 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
 - (void)drawFrameAtRow:(NSInteger)row
                 column:(NSInteger)column
                flipped:(BOOL)flipped
-              fraction:(CGFloat)fraction {
+              fraction:(CGFloat)fraction
+              operation:(NSCompositingOperation)operation {
     if (row < 0 || fraction <= 0) return;
     BOOL usesActionAtlas = row >= 11;
     NSImage *sourceAtlas = usesActionAtlas ? self.actionAtlas : self.atlas;
@@ -322,7 +323,7 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
     }
     [sourceAtlas drawInRect:self.bounds
                    fromRect:source
-                  operation:NSCompositingOperationSourceOver
+                  operation:operation
                    fraction:fraction
              respectFlipped:NO
                       hints:nil];
@@ -342,29 +343,51 @@ static NSArray<NSString *> *MMWellnessMessages(void) {
         progress = progress * progress * (3.0 - 2.0 * progress);
     }
     if (progress < 1.0) {
-        [self drawFrameAtRow:self.previousRow
-                     column:self.previousColumn
-                    flipped:self.previousFlippedHorizontally
-                   fraction:(1.0 - self.previousFrameBlend) * (1.0 - progress)];
-        if (self.previousNextColumn != self.previousColumn && self.previousFrameBlend > 0) {
+        BOOL hasBase = NO;
+        CGFloat previousWeight = (1.0 - self.previousFrameBlend) * (1.0 - progress);
+        CGFloat previousNextWeight = self.previousFrameBlend * (1.0 - progress);
+        if (previousWeight > 0) {
+            [self drawFrameAtRow:self.previousRow
+                         column:self.previousColumn
+                        flipped:self.previousFlippedHorizontally
+                       fraction:previousWeight
+                       operation:NSCompositingOperationSourceOver];
+            hasBase = YES;
+        }
+        if (self.previousNextColumn != self.previousColumn && previousNextWeight > 0) {
             [self drawFrameAtRow:self.previousRow
                          column:self.previousNextColumn
                         flipped:self.previousFlippedHorizontally
-                       fraction:self.previousFrameBlend * (1.0 - progress)];
+                       fraction:previousNextWeight
+                       operation:(hasBase ? NSCompositingOperationPlusLighter : NSCompositingOperationSourceOver)];
+            hasBase = YES;
         }
-        [self drawFrameAtRow:self.row column:0 flipped:self.flippedHorizontally fraction:progress];
+        if (progress > 0) {
+            [self drawFrameAtRow:self.row
+                         column:0
+                        flipped:self.flippedHorizontally
+                       fraction:progress
+                       operation:(hasBase ? NSCompositingOperationPlusLighter : NSCompositingOperationSourceOver)];
+        }
         self.needsDisplay = YES;
     } else {
         self.previousRow = -1;
-        [self drawFrameAtRow:self.row
-                     column:self.column
-                    flipped:self.flippedHorizontally
-                   fraction:1.0 - self.frameBlend];
+        CGFloat currentWeight = 1.0 - self.frameBlend;
+        BOOL hasBase = NO;
+        if (currentWeight > 0) {
+            [self drawFrameAtRow:self.row
+                         column:self.column
+                        flipped:self.flippedHorizontally
+                       fraction:currentWeight
+                       operation:NSCompositingOperationSourceOver];
+            hasBase = YES;
+        }
         if (self.nextColumn != self.column && self.frameBlend > 0) {
             [self drawFrameAtRow:self.row
                          column:self.nextColumn
                         flipped:self.flippedHorizontally
-                       fraction:self.frameBlend];
+                       fraction:self.frameBlend
+                       operation:(hasBase ? NSCompositingOperationPlusLighter : NSCompositingOperationSourceOver)];
         }
     }
 }
@@ -1591,7 +1614,7 @@ int main(int argc, const char *argv[]) {
             return 0;
         }
         if ([NSProcessInfo.processInfo.arguments containsObject:@"--print-behavior-config"]) {
-            printf("single_instance=true fixed_pet_width=97 enlarged_action_scale=1.5 walk_action_scale=1.5 roll_action_scale=1.5 enlarged_actions=walk-left-walk-right-roll walk_fps=10.0 walk_speed=42 idle_fps=2.8 play_fps=3.21 custom_action_fps=2.8-10.0 custom_action_frames=16 custom_action_rows=11-18 custom_action_source=keyed-live-video video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant action_atlas_dimensions=6144x3328 action_cell_pixels=384x416 action_atlas_lossless=true source_video_resolution=720x720 render_fps=60 render_interpolation=high temporal_interpolation=short-window-adjacent-frame-crossfade temporal_blend_window=0.42 illustrated_fallback=false action_transition=tail-to-head-crossfade transition_seconds=0.62 endpoint_completion=entry-hold-exit-hold-clamped-last-frame roll_exit_hold_seconds=2.2 roll_action_duration_seconds=6.76 double_click=cold-joke petting=expectant petting_distance_px=84 petting_cooldown_seconds=12 meal_trigger=scheduled-only meal_schedule_local=08:30,12:00,19:00 meal_duration_seconds=1800 automatic_behavior=calm automatic_roll=periodic-and-idle-routine roll_interval_seconds=300-600 roll_active_only=true idle_routine_after_seconds=180 idle_routine=walk-left-head-tilt-roll-walk-right idle_routine_repeat_seconds=180 corner_hide_seconds=300 hover_reveal=expectant-to-corner focus_protection=typing-fullscreen-media cinema_mode=manual wellness_interval_seconds=3600 wellness_display_seconds=10 work_active_window_seconds=300 right_click_quit=temporary left_source=keyed-live-video right_source=keyed-live-video-with-real-tail-completion approach_trigger=expectant upward_drag=expectant drop_action=expectant\n");
+            printf("single_instance=true fixed_pet_width=97 enlarged_action_scale=1.5 walk_action_scale=1.5 roll_action_scale=1.5 enlarged_actions=walk-left-walk-right-roll walk_fps=10.0 walk_speed=42 idle_fps=2.8 play_fps=3.21 custom_action_fps=2.8-10.0 custom_action_frames=16 custom_action_rows=11-18 custom_action_source=keyed-live-video video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant action_atlas_dimensions=6144x3328 action_cell_pixels=384x416 action_atlas_lossless=true source_video_resolution=720x720 render_fps=60 render_interpolation=high temporal_interpolation=alpha-preserving-adjacent-frame-crossfade temporal_compositing=plus-lighter-weighted-sum temporal_blend_window=0.42 illustrated_fallback=false action_transition=tail-to-head-crossfade transition_seconds=0.62 endpoint_completion=entry-hold-exit-hold-clamped-last-frame roll_exit_hold_seconds=2.2 roll_action_duration_seconds=6.76 double_click=cold-joke petting=expectant petting_distance_px=84 petting_cooldown_seconds=12 meal_trigger=scheduled-only meal_schedule_local=08:30,12:00,19:00 meal_duration_seconds=1800 automatic_behavior=calm automatic_roll=periodic-and-idle-routine roll_interval_seconds=300-600 roll_active_only=true idle_routine_after_seconds=180 idle_routine=walk-left-head-tilt-roll-walk-right idle_routine_repeat_seconds=180 corner_hide_seconds=300 hover_reveal=expectant-to-corner focus_protection=typing-fullscreen-media cinema_mode=manual wellness_interval_seconds=3600 wellness_display_seconds=10 work_active_window_seconds=300 right_click_quit=temporary left_source=keyed-live-video right_source=keyed-live-video-with-real-tail-completion approach_trigger=expectant upward_drag=expectant drop_action=expectant\n");
             return 0;
         }
         NSApplication *app = NSApplication.sharedApplication;

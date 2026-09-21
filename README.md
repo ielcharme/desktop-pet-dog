@@ -167,7 +167,7 @@ The desktop app keeps Meimei at the repository's small `97 px` resting width, wi
 - Leftward and rightward movement keep their own source-body motion. Because every frame of the supplied right-walk clip cuts off the tail, only the missing tail is completed frame by frame from mirrored real-tail pixels in the paired left-walk clip.
 - Walking now uses 16 source frames at `10.0 fps`, with tracked baseline normalization and backing-pixel alignment to reduce small-size jitter without making the walk faster.
 - Real-dog waiting uses 16 source frames at `2.8 fps`; other non-walking actions keep their previous relaxed duration.
-- The eight real-dog actions now use 16 frames each and live in a separate desktop-only atlas. It uses lossless WebP at `6144×3328`, with `384×416` cells and high-quality interpolation. The app refreshes at `60 Hz` and applies a short, eased adjacent-frame blend during only the final `42%` of each frame interval, softening jumps without turning the dog into a constant double image. The validated Codex `8×11` atlas remains unchanged.
+- The eight real-dog actions now use 16 frames each and live in a separate desktop-only atlas. It uses lossless WebP at `6144×3328`, with `384×416` cells and high-quality interpolation. The app refreshes at `60 Hz` and applies an alpha-preserving, eased adjacent-frame blend during only the final `42%` of each frame interval, softening jumps without opacity flicker or a constant double image. The validated Codex `8×11` atlas remains unchanged.
 - One-shot actions hold their first and last frames instead of wrapping abruptly back to frame 1. Every action change then blends the outgoing terminal frame into the incoming head frame for `0.62 s` before the new animation continues.
 - Autonomous walks and playful actions are deliberately uncommon, with `10–22 s` resting periods between most decisions.
 
@@ -423,7 +423,7 @@ Skill 会先验证资源，并在写入仓库外的位置之前显示实际安�
 - 向左走和向右走保留各自素材中的身体动作。由于成片8每一帧都截断了尾巴，程序只使用成片7中真实尾巴的镜像画面，逐帧补齐成片8缺失的尾巴。
 - 左右走路升级为 16 个源视频采样帧，以 `10.0 fps` 播放，并继续使用基线跟踪和屏幕像素对齐；总时长没有加快。
 - 真实等待动作升级为 16 帧、`2.8 fps`；其他非步行动作同样增加帧数，但保持原来的松弛时长。
-- 八个真实狗狗动作全部升级为每个 16 帧，放在单独的无损 WebP 桌面图集中。图集尺寸为 `6144×3328`，每格 `384×416`。App 以 `60 Hz` 刷新，只在每个帧间隔最后 `42%` 加入短暂缓动混合，减轻跳帧，同时避免小狗长时间出现重影。已验证的 Codex `8×11` 图集保持不变。
+- 八个真实狗狗动作全部升级为每个 16 帧，放在单独的无损 WebP 桌面图集中。图集尺寸为 `6144×3328`，每格 `384×416`。App 以 `60 Hz` 刷新，只在每个帧间隔最后 `42%` 使用透明度恒定的缓动合成，减轻跳帧，同时避免妹妹忽明忽暗或长时间出现重影。已验证的 Codex `8×11` 图集保持不变。
 - 单次动作会在第 1 帧和最后 1 帧短暂停留，不会在结束时突然跳回开头；换动作时再用 `0.62 秒`从上一动作尾帧平滑过渡到下一动作首帧。
 - 自动散步和玩耍会少很多，多数判断之间会先待机 `10–22 秒`，整体更像一只安静生活在屏幕上的小狗。
 

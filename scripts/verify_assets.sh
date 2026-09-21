@@ -105,7 +105,7 @@ verify_app() {
   version="$(/usr/bin/plutil -extract CFBundleShortVersionString raw -o - "$plist")"
   architecture="$(/usr/bin/file "$executable")"
   [[ "$bundle_id" == "com.lucie.meteor-meimei" ]] || { echo "Unexpected bundle id: $bundle_id" >&2; return 1; }
-  [[ "$version" == "3.0" ]] || { echo "Unexpected app version: $version" >&2; return 1; }
+  [[ "$version" == "3.1" ]] || { echo "Unexpected app version: $version" >&2; return 1; }
   single_instance="$(/usr/bin/plutil -extract LSMultipleInstancesProhibited raw -o - "$plist")"
   [[ "$single_instance" == "true" ]] || { echo "Desktop app does not prohibit multiple instances." >&2; return 1; }
   [[ "$architecture" == *"arm64"* ]] || { echo "Desktop app is not arm64: $architecture" >&2; return 1; }
@@ -131,7 +131,8 @@ verify_app() {
     "video_actions=head-tilt-eating-roll-waiting-startup-walk-left-walk-right-expectant"
     "action_atlas_dimensions=6144x3328" "action_cell_pixels=384x416" "action_atlas_lossless=true"
     "source_video_resolution=720x720" "render_fps=60" "render_interpolation=high"
-    "temporal_interpolation=short-window-adjacent-frame-crossfade" "temporal_blend_window=0.42"
+    "temporal_interpolation=alpha-preserving-adjacent-frame-crossfade"
+    "temporal_compositing=plus-lighter-weighted-sum" "temporal_blend_window=0.42"
     "illustrated_fallback=false" "action_transition=tail-to-head-crossfade" "transition_seconds=0.62"
     "endpoint_completion=entry-hold-exit-hold-clamped-last-frame"
     "roll_exit_hold_seconds=2.2" "roll_action_duration_seconds=6.76"
