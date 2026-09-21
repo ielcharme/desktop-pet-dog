@@ -1,76 +1,50 @@
 # Desktop Pet – Desktop Puppy / 桌面宠物-桌面小狗
 
-> No feeding. No mandatory petting. Permanent life. A tiny electronic puppy who stays with you without becoming another responsibility.
+> A tiny border collie who lives on your Mac desktop. No feeding, no mandatory petting, and no death mechanic—just permanent, pressure-free companionship.
 
-> 不需要喂养，不要求抚摸，拥有永久生命。一只陪伴你、却不会增加照顾负担的电子小狗。
+> 一只生活在 Mac 桌面上的边牧妹妹。不需要喂养，不要求抚摸，也不会死亡：她会一直陪着你，但不会成为新的负担。
 
-![Meimei the border collie resting](assets/pet/idle-preview.gif)
+<p align="center">
+  <img src="assets/desktop-preview/expectant.gif" width="260" alt="Meimei, the real border collie desktop puppy, looking expectant">
+</p>
 
-[English](#english) · [中文对照](#中文对照)
+<p align="center">
+  <strong>Latest real-dog edition · macOS desktop app · Codex v2 pet · reusable Codex Skill</strong><br>
+  <strong>最新版真实小狗动作 · macOS 桌面 App · Codex v2 宠物 · 可复用 Codex Skill</strong>
+</p>
+
+[English](#english) · [中文说明](#中文说明)
+
+---
 
 <a id="english"></a>
 
 ## English
 
-### Meet Meimei
+### What is Meimei?
 
-Meimei (妹妹) is a meteor-pattern border collie with graphite-black, silver, and white fur, cosmic-blue eyes, and a copper name tag.
+Meimei (妹妹) is a small border collie companion for macOS. She rests in a corner of your desktop, walks around occasionally, reacts to your mouse, tells cold jokes, and reminds you to move and drink water during long work sessions.
 
-Install her as a small macOS desktop companion and she will walk, rest, play, hide at the edge of the screen, tell offline jokes, and gently look after your work rhythm.
+Her desktop animations are keyed frame by frame from the latest supplied green-screen dog clips. The dog, movement, eating bowl, and full-body poses are preserved; the green background is removed and the result is packed into a transparent, lossless animation atlas.
 
-Meimei has no hunger bar, health bar, daily check-in, growth system, or death mechanic. You never have to feed or pet her. Interaction is optional: she remains alive and ready to return whenever the app is still installed.
+Meimei is not a virtual-pet game:
 
-This repository contains:
+- No hunger bar, health bar, coins, levels, or daily check-in.
+- No feeding or petting is required.
+- She never becomes sick, ages, or dies when you are away.
+- Everything runs locally, with no account, telemetry, ads, or online AI calls.
 
-- A ready-to-run **macOS desktop puppy app**.
-- A complete **Codex v2 animated pet**.
-- A reusable **Codex Skill** for installing, verifying, and maintaining Meimei.
+### See the latest Meimei
 
-### Why keep a desktop puppy?
+| Head tilt | Eating | Rolling / belly-up | Waiting |
+| --- | --- | --- | --- |
+| ![Meimei tilting her head](assets/desktop-preview/head-tilt.gif) | ![Meimei eating](assets/desktop-preview/eating.gif) | ![Meimei rolling onto her belly](assets/desktop-preview/roll.gif) | ![Meimei waiting](assets/desktop-preview/waiting.gif) |
 
-#### Permanent life, zero care pressure
+| Startup | Walk left | Walk right | Expectant / approach |
+| --- | --- | --- | --- |
+| ![Meimei starting up](assets/desktop-preview/startup.gif) | ![Meimei walking left](assets/desktop-preview/walk-left.gif) | ![Meimei walking right](assets/desktop-preview/walk-right.gif) | ![Meimei looking expectant](assets/desktop-preview/expectant.gif) |
 
-- No feeding, bathing, walking schedule, or cleanup.
-- No required petting and no punishment for being away.
-- No coins, energy, levels, subscriptions, or paid progression.
-- No illness, ageing, or death caused by time or lack of attention.
-
-#### A small companion that can play
-
-- Walks left and right, rests, greets, plays, and asks for attention at a relaxed pace.
-- Includes eight desktop-only actions cut directly from the latest real border-collie green-screen footage: head tilt, eating, rolling over, waiting, startup, walking left, walking right, and an expectant look.
-- Greeting uses the head-tilt clip; edge emergence and upward dragging use the expectant/approach clip; focused review uses waiting. Startup plays once when the app opens.
-- Uses 16 real-video frames per action, refreshes at 60 Hz, and blends adjacent frames briefly before each change, while preserving the same calm action duration.
-- Changes actions through completed endpoint holds and a gentle crossfade instead of a hard cut.
-- Single-click Meimei for a playful action; double-click her to hear an offline cold joke immediately.
-- Move the pointer back and forth over her body to pet her; after recognizing the petting gesture, she responds with her expectant “coming closer” action. A short cooldown prevents accidental repeats.
-- When dragged upward, Meimei follows the pointer with her expectant “coming closer to you” action and drops naturally when released.
-- During recent computer use, her rolling/belly-up action appears naturally about once every 5–10 minutes; the menu and single-click play can still trigger it directly. Each roll now lasts about 8.6 seconds and lingers belly-up for 4 seconds before the next action.
-- After three minutes without direct interaction, she plays a smooth little routine in this exact order: walk left → head tilt → roll → walk right. If she is still left alone, the routine can repeat after another three minutes, so rolling appears more often without making ordinary action changes busier.
-- Eating is scheduled only three times a day in local time: `08:30`, `12:00`, and `19:00`. Each meal lasts 30 minutes; random play, clicks, petting, and the action menu do not add extra meals.
-- When parked in a bottom corner and ignored for five minutes, she retreats into the screen edge.
-- Hover over the visible edge of her body and she jumps back out to the same corner.
-- Occasionally tells a bundled offline cold joke in a speech bubble, even without interaction.
-- Spends much longer resting and is less likely to switch into an autonomous action, so she feels calm rather than busy.
-
-#### Long-work rest and water reminders
-
-Meimei helps when you have been working at the computer for a long time:
-
-- Once per hour, she checks whether the Mac has been actively used during the previous five minutes.
-- When active work is detected, she appears on the desktop and reminds you to stand up, move for 2–5 minutes, and drink some water.
-- The reminder is spoken through Meimei’s own desktop speech bubble—not through a Codex chat notification.
-- The bubble closes automatically after 10 seconds and never remains permanently on the desktop.
-- If Meimei was hiding inside the screen edge, she returns there after the reminder.
-- If the Mac is idle, Meimei is paused or hidden, or you are watching a video, that hourly reminder is skipped.
-- If you are typing at the exact reminder time, she waits until typing has stopped for about three seconds so she does not cover the input area.
-
-#### Designed not to interrupt work or video
-
-- Hides automatically while you type and returns about three seconds after keyboard activity stops.
-- Hides when the foreground window is full-screen.
-- Hides while Apple TV, QuickTime Player, VLC, IINA, and other recognized media players are active.
-- For windowed video inside a browser, use **Cinema Mode** from the paw menu.
+These previews show the same transparent real-dog rows used by the desktop app. The original source videos are not bundled or uploaded.
 
 ### Quick start
 
@@ -80,52 +54,75 @@ Requirements: Apple Silicon Mac and macOS 13 or later.
 git clone https://github.com/ielcharme/desktop-pet-dog.git
 cd desktop-pet-dog
 
-# Verify the app, animation atlas, architecture, and signature
+# Check the app, signature, architecture, and animation assets
 ./scripts/verify_assets.sh
 
-# Preview the destination without changing files
+# Preview the install destination without changing files
 ./scripts/install.sh --target desktop --dry-run
 
-# Install to ~/Applications/妹妹.app
+# Install Meimei to ~/Applications/妹妹.app
 ./scripts/install.sh --target desktop --install
 
-# Launch Meimei
+# Launch her
 open "$HOME/Applications/妹妹.app"
 ```
 
-After launch, a paw icon appears in the macOS menu bar. Its menu can:
+After launch, a paw icon appears in the macOS menu bar. Meimei does not add herself to Login Items.
 
-- Call Meimei to the current screen
-- Play with Meimei
-- Choose a specific action: head tilt, roll, wait, startup, or expectant look
-- Ask for a cold joke
-- Enable or disable Cinema Mode
-- Pause walking
-- Hide Meimei
-- Quit Meimei
+### How to interact
 
-The app does not add itself to Login Items. To close it completely, choose **Quit Meimei** from the paw menu.
+| You do | Meimei does |
+| --- | --- |
+| Single-click her | Plays a relaxed interaction such as head tilt, rolling, or an expectant look |
+| Double-click her | Tells an offline cold joke in a speech bubble |
+| Move the pointer back and forth over her | Recognizes the petting gesture and comes closer with an expectant look |
+| Drag her upward | Follows the pointer with the expectant/approach animation, then drops naturally |
+| Drag her to a bottom corner | Stays there; after five quiet minutes, retreats into the screen edge |
+| Hover over the visible edge peek | Hops back out and waits in the same corner |
+| Right-click her | Offers **Temporarily Quit Meimei** |
+| Use the paw menu | Recall, play, choose an action, ask for a joke, pause, hide, enable Cinema Mode, or quit |
 
-You can also place the pointer over Meimei, right-click, and choose **Temporarily Quit Meimei**. This closes the app without uninstalling it; open `~/Applications/妹妹.app` whenever you want her back.
+Temporarily quitting closes the app without uninstalling it. Open `~/Applications/妹妹.app` whenever you want her back.
 
-### Update an installed app
+### A calmer, more natural routine
 
-The public installer does not silently overwrite an existing copy. To update:
+- Meimei spends most of her time resting; ordinary autonomous decisions are separated by `10–22 seconds`.
+- Walking left, walking right, waiting, head tilt, startup, expectant, eating, and rolling all use the latest real-dog animation rows.
+- After `3 minutes` without direct interaction, she performs one continuous mini-story: **walk left → head tilt → roll → walk right**.
+- While the Mac is actively used, rolling/belly-up also appears naturally about every `5–10 minutes`.
+- A roll lasts about `8.6 seconds`, including a `4-second` belly-up hold before she changes pose.
+- Eating occurs only during three local-time meal windows: `08:30–09:00`, `12:00–12:30`, and `19:00–19:30`.
+- Offline cold jokes may appear occasionally, or immediately when you double-click her.
 
-```bash
-./scripts/install.sh --target desktop --install --replace
-./scripts/verify_assets.sh --installed desktop
-```
+### Rest and water reminders
 
-For public installations, `--replace` moves the previous copy to a timestamped sibling backup before installing the new one.
+Once per hour, Meimei checks whether the Mac was actively used during the previous five minutes. If you are working, she shows a short desktop speech bubble asking you to stand up for 2–5 minutes and drink some water.
 
-### Desktop app, Codex pet, or both
+- The bubble disappears automatically after `10 seconds`.
+- If you are typing, she waits until the keyboard has been quiet for about `3 seconds`.
+- The reminder is skipped when the Mac is idle, Meimei is paused or hidden, a full-screen window is active, or Cinema Mode is on.
+- If she was hiding in the screen edge, she returns there after the reminder.
 
-| Mode | Where Meimei appears | Best for |
-| --- | --- | --- |
-| macOS desktop app | On the Mac desktop | Walking, play, jokes, and long-work wellness reminders |
-| Codex v2 pet | Inside Codex | Animations that follow Codex task states |
-| Both | Desktop and Codex | Keeping the same Meimei in both environments |
+### She avoids your work area
+
+Meimei is designed to step aside when attention matters:
+
+- Hides while you type and returns after about three quiet seconds.
+- Hides when the foreground window is full-screen.
+- Hides for Apple TV, QuickTime Player, VLC, IINA, and other recognized media players.
+- Provides a manual **Cinema Mode** for windowed browser video without inspecting page content.
+
+### Desktop app, Codex pet, and Skill
+
+This repository contains three related pieces:
+
+| Component | Purpose |
+| --- | --- |
+| macOS desktop app | The small real-dog companion that walks, plays, hides, jokes, and gives wellness reminders |
+| Codex v2 pet | A separate validated `8 × 11` illustrated atlas whose animations follow Codex task states |
+| Codex Skill | Instructions and scripts for installing, verifying, rebuilding, or restoring Meimei |
+
+The desktop app uses the latest real-dog video atlas. The Codex pet keeps its own v2 atlas for Codex compatibility; the app does not flash back to it as a desktop fallback.
 
 Install only the Codex pet:
 
@@ -141,74 +138,57 @@ Install both versions:
 ./scripts/install.sh --target all --install
 ```
 
-### Install the Codex Skill
-
-The Skill lets you ask Codex to install, inspect, restore, or rebuild Meimei.
+Install the reusable Skill:
 
 ```bash
 npx -y skills add https://github.com/ielcharme/desktop-pet-dog
 ```
 
-Example prompts:
+Example request:
 
 ```text
 Use $meteor-meimei-pet to install and launch Meimei as my macOS desktop pet.
-Use $meteor-meimei-pet to install Meimei as my Codex pet.
-Use $meteor-meimei-pet to install both the desktop and Codex versions.
-Use $meteor-meimei-pet to verify that Meimei's assets are complete.
 ```
 
-The Skill verifies the package and shows the resolved destination before writing outside the repository.
+### Update an installed copy
 
-### Size and animation
+The installer does not silently overwrite an existing app. To replace it deliberately:
 
-The desktop app keeps Meimei at the repository's small `97 px` resting width, with height derived from the original `192:208` aspect ratio. Walking left, walking right, and rolling all expand smoothly to `1.5×` from the bottom center so her complete body stays visible. It also prohibits multiple running instances, so opening Meimei again reuses the one already on screen.
+```bash
+./scripts/install.sh --target desktop --install --replace
+./scripts/verify_assets.sh --installed desktop
+```
 
-- Leftward and rightward movement keep their own source-body motion. Because every frame of the supplied right-walk clip cuts off the tail, only the missing tail is completed frame by frame from mirrored real-tail pixels in the paired left-walk clip.
-- Walking now uses 16 source frames at `10.0 fps`, with tracked baseline normalization and backing-pixel alignment to reduce small-size jitter without making the walk faster.
-- Real-dog waiting uses 16 source frames at `2.8 fps`; other non-walking actions keep their previous relaxed duration.
-- The eight real-dog actions now use 16 frames each and live in a separate desktop-only atlas. It uses lossless WebP at `6144×3328`, with `384×416` cells and high-quality interpolation. The app refreshes at `60 Hz` and applies an alpha-preserving, eased adjacent-frame blend during only the final `42%` of each frame interval, softening jumps without opacity flicker or a constant double image. The validated Codex `8×11` atlas remains unchanged.
-- One-shot actions hold their first and last frames instead of wrapping abruptly back to frame 1. Every action change then blends the outgoing terminal frame into the incoming head frame for `0.62 s` before the new animation continues.
-- Autonomous walks and playful actions are deliberately uncommon, with `10–22 s` resting periods between most decisions.
+The public installer first moves the old copy to a timestamped sibling backup.
+
+### Motion quality and size
+
+- Small resting width: `97 px`.
+- Walking and rolling scale: `1.5×`, anchored from the bottom center so the complete body remains visible.
+- Eight real-dog actions, each using `16` ordered source frames.
+- Lossless desktop atlas: `6144 × 3328`, with `384 × 416` cells.
+- App refresh: `60 Hz`, with alpha-preserving adjacent-frame blending.
+- Action transition: completed start/end poses plus a `0.62-second` terminal-to-entry crossfade.
+- Walking uses tracked baseline normalization and screen-pixel alignment to reduce small-size jitter.
+- The supplied right-walk clip had a cropped tail; only that missing area is completed from mirrored real-tail pixels in the paired left-walk clip.
 
 <details>
-<summary>View the eight desktop action previews</summary>
+<summary>Open the full real-dog action contact sheet</summary>
 
-| Head tilt | Eating | Rolling | Waiting |
-| --- | --- | --- | --- |
-| ![Meimei tilting her head](assets/desktop-preview/head-tilt.gif) | ![Meimei eating](assets/desktop-preview/eating.gif) | ![Meimei rolling](assets/desktop-preview/roll.gif) | ![Meimei waiting](assets/desktop-preview/waiting.gif) |
-
-| Startup | Walking left | Walking right | Expectant look |
-| --- | --- | --- | --- |
-| ![Meimei starting up](assets/desktop-preview/startup.gif) | ![Meimei walking left](assets/desktop-preview/walk-left.gif) | ![Meimei walking right](assets/desktop-preview/walk-right.gif) | ![Meimei looking expectant](assets/desktop-preview/expectant.gif) |
-
-The source MP4 files provide the final dog pixels and real motion. Their green backgrounds are removed frame by frame, then stored in a lossless 2× desktop atlas without another lossy video encode. The missing right-walk tail is reconstructed locally from the paired real left-walk tail; no online generation service is used. The app contains only the transparent action atlas, while the original videos are not bundled or uploaded.
-
-![Right-walk tail completion QA](assets/desktop-preview/walk-right-tail-completion.png)
+![All eight real-dog desktop actions](assets/desktop-preview/video-actions-contact-sheet-normal.png)
 
 </details>
 
-<details>
-<summary>View the complete animation atlas</summary>
-
-![Complete Meimei animation atlas](assets/pet/contact-sheet.png)
-
-</details>
-
-### Privacy and safety
+### Privacy
 
 Meimei is local-only:
 
-- No network requests, online AI calls, telemetry, or advertising.
-- No access to Codex conversations, browser pages, screen pixels, accounts, or credentials.
-- No key-content recording; the app only reads how long it has been since the last key or input event.
-- Frontmost-app identity and window geometry are used only for full-screen and video protection.
-- No Accessibility, Screen Recording, microphone, or camera permission.
-- No automatic Login Item.
+- No network requests, telemetry, advertising, online AI, microphone, camera, or screen recording.
+- No access to Codex conversations, browser pages, accounts, credentials, or the contents of typed keys.
+- She reads only anonymous time-since-input, frontmost app identity, and window geometry for reminders and focus protection.
+- No Accessibility permission and no automatic Login Item.
 
-Windowed browser video cannot be detected reliably without inspecting page content, so Cinema Mode is intentionally manual in that case.
-
-### Build from source
+### Build and verify from source
 
 Requires macOS 13 or later and Xcode Command Line Tools.
 
@@ -217,118 +197,47 @@ Requires macOS 13 or later and Xcode Command Line Tools.
 ./scripts/verify_assets.sh --app dist/妹妹.app
 ```
 
-The output is `dist/妹妹.app`. The build uses Cocoa and ApplicationServices with a local ad-hoc signature. This is suitable for local use but is not Apple Developer ID signing or Apple notarization.
+The output is `dist/妹妹.app`. It is locally ad-hoc signed, not Apple Developer ID signed or notarized.
 
-### Repository structure
+### Repository map
 
 ```text
 desktop-pet-dog/
-├── SKILL.md                         # Core Codex Skill instructions
-├── agents/openai.yaml               # Skill display metadata and default prompt
+├── SKILL.md                         # Codex Skill instructions
+├── agents/openai.yaml               # Skill metadata and default prompt
 ├── assets/
-│   ├── pet/                         # Codex v2 atlas, manifest, and QA previews
-│   ├── desktop/妹妹.app.zip         # Prebuilt Apple Silicon app archive
-│   └── desktop-source/              # Reviewable Objective-C source
-├── references/asset-contract.md     # Animation, size, and behavior contract
+│   ├── desktop/妹妹.app.zip         # Prebuilt Apple Silicon app
+│   ├── desktop-preview/             # Latest real-dog GIFs and visual QA
+│   ├── desktop-source/              # Reviewable Objective-C source
+│   └── pet/                         # Separate Codex v2 pet atlas
+├── references/asset-contract.md     # Size, motion, behavior, and privacy contract
 └── scripts/
-    ├── install.sh                   # Installation and replacement
-    ├── verify_assets.sh             # Asset and app verification
-    └── build_desktop_app.sh         # Local app build
+    ├── install.sh
+    ├── verify_assets.sh
+    └── build_desktop_app.sh
 ```
-
-### FAQ
-
-#### Does Meimei really need no feeding or petting?
-
-Yes. There is no hunger, affection score, or daily task. Clicking and petting are optional interactions and do not affect her life.
-
-#### What does “permanent life” mean?
-
-It is part of Meimei’s design: she never ages or dies because of time, missing food, or lack of attention. As long as the app remains installed, you can always launch her again.
-
-#### Will the rest and water reminder stay on screen?
-
-No. During long active work, the desktop bubble appears once per hour and closes automatically after 10 seconds. It is skipped during inactivity and video playback.
-
-#### Why does installing the Skill not put Meimei on my desktop?
-
-The Skill is an instruction and asset package for Codex. The desktop app must also be installed and launched.
-
-#### Does the app support Intel Mac or Windows?
-
-The prebuilt app is currently Apple Silicon `arm64` only. The Codex pet atlas is independent from the desktop app.
-
-### License
-
-No open-source license is currently attached. Public visibility does not grant permission to copy, modify, redistribute, or use the project commercially.
 
 ---
 
-<a id="中文对照"></a>
+<a id="中文说明"></a>
 
-## 中文对照
+## 中文说明
 
-### 认识妹妹
+### 妹妹是做什么的？
 
-妹妹是一只陨石纹边境牧羊犬：石墨黑、银灰和白色毛发，宇宙蓝眼睛，戴着铜色名牌。
+妹妹是一只会生活在 Mac 桌面上的小型边牧。她会安静待机、偶尔散步、回应鼠标互动、讲冷笑话，并在你长时间工作时提醒起身活动和喝水。
 
-安装后，她会作为一只小型 macOS 桌面宠物散步、休息、玩耍、躲进屏幕边框、讲本地冷笑话，并温柔地照顾你的工作节奏。
+桌面版已经换成最新版真实小狗动作：从绿幕视频逐帧抠出小狗，保留全身、动作和吃饭的小碗，再制作成透明无损动画。原始视频不会被打包进 App，也不会上传。
 
-妹妹没有饥饿值、健康值、每日签到、成长系统或死亡机制。你不需要喂养她，也不必每天抚摸她。互动完全自愿；只要 App 还在，她就拥有永久生命，随时可以再次回来。
+妹妹不是需要养成的电子宠物游戏：
 
-这个仓库包含：
+- 不需要喂养，也不要求每天抚摸。
+- 没有饥饿值、健康值、签到、金币或等级。
+- 不会因为你离开而生病、衰老或死亡。
+- 永久生命，想她时随时可以重新打开。
+- 完全在本机运行，不需要账号，也没有广告或遥测。
 
-- 可以直接运行的 **macOS 桌面小狗 App**。
-- 完整的 **Codex v2 动画宠物资源**。
-- 用于安装、检查和维护妹妹的 **Codex Skill**。
-
-### 为什么需要一只桌面小狗？
-
-#### 永久生命，零照顾压力
-
-- 不需要喂食、洗澡、固定遛狗或清理。
-- 不要求每天抚摸，长期离开也不会惩罚你。
-- 没有金币、体力、等级、订阅或付费养成。
-- 不会因为时间流逝或缺少关注而生病、衰老或死亡。
-
-#### 会自己玩耍的小陪伴
-
-- 用松弛的节奏左右散步、休息、打招呼、玩耍和期待互动。
-- 直接从最新真实边牧绿幕视频中抠出八个桌面专属动作：歪头杀、吃饭、打滚、等待、开机启动、向左走、向右走和一脸期待。
-- 打招呼使用歪头杀；从边框跳出和向上拖动使用“一脸期待／靠近你”；专注查看使用等待。App 打开时会完整播放一次开机启动。
-- 每个真实动作由 8 个采样帧升级为 16 个，桌面刷新率提高到 60 Hz，并在相邻帧切换前加入短暂缓动；动作总时长与原来的松弛节奏不变。
-- 不同动作会先完整保留首帧和尾帧，再使用柔和的“上一动作尾帧 → 下一动作首帧”过渡，不再硬切。
-- 单击妹妹会触发互动动作；双击妹妹会马上讲一个本地冷笑话。
-- 在妹妹身上来回移动鼠标，就像抚摸她一样；识别到抚摸后会播放“一脸期待／靠近你”，并设有短暂冷却，避免误触后连续播放。
-- 向上拖动时，她会跟随鼠标播放“一脸期待／靠近你”；松手后自然落回桌面。
-- 电脑近期有人使用时，妹妹大约每隔 5–10 分钟会自然地打滚、翻肚皮一次；菜单和单击玩耍仍然可以直接触发。每次动作约持续 8.6 秒，最后会翻着肚皮停留 4 秒再切换动作。
-- 连续 3 分钟没有直接互动后，妹妹会按固定顺序表演一段连贯的小剧场：向左走 → 歪头杀 → 打滚 → 向右走。如果还是没人理她，再过 3 分钟可以重复一次；这样打滚会更常出现，但普通动作切换不会变得更忙。
-- 吃饭只按本机时间每天出现三次：早上 `08:30`、中午 `12:00`、晚上 `19:00`，每次持续 30 分钟。随机玩耍、单击、抚摸和动作菜单都不会增加额外的吃饭次数。
-- 把她放在屏幕左下角或右下角，5 分钟没有互动后，她会躲进屏幕边框。
-- 鼠标放到露在边框外的部分时，她会跳出来并停在原来的桌角。
-- 即使没有互动，她也会偶尔用桌面气泡讲一个内置的本地冷笑话。
-- 自动散步和玩耍的概率已经降低，大部分时间会安静地休息，不会显得一直很忙。
-
-#### 长时间工作时提醒休息和喝水
-
-当你长时间使用电脑工作时，妹妹会照顾你的休息节奏：
-
-- 每小时检查一次最近 5 分钟内是否仍有电脑操作。
-- 检测到正在工作时，妹妹会出现在桌面，提醒你起身活动 2–5 分钟并喝几口水。
-- 提醒通过妹妹自己的桌面对话气泡出现，不会发送到 Codex 聊天。
-- 气泡 10 秒后自动消失，不会长期停留在桌面上。
-- 如果妹妹原本藏在屏幕边框里，提醒结束后她还会躲回去。
-- 电脑闲置、妹妹被暂停或隐藏、正在全屏或观影时，本轮提醒会跳过。
-- 如果提醒到点时你恰好正在打字，她会等待停止输入约 3 秒后再出现，避免挡住输入区域。
-
-#### 工作和看剧时不打扰
-
-- 打字时自动隐藏，停止输入约 3 秒后再回来。
-- 前台窗口全屏时自动隐藏。
-- 使用 Apple TV、QuickTime Player、VLC、IINA 等播放器时自动隐藏。
-- 浏览器窗口化看剧时，可以从菜单栏爪印开启「观影模式」。
-
-### 快速开始
+### 快速安装
 
 系统要求：Apple Silicon Mac，macOS 13 或更高版本。
 
@@ -336,183 +245,121 @@ No open-source license is currently attached. Public visibility does not grant p
 git clone https://github.com/ielcharme/desktop-pet-dog.git
 cd desktop-pet-dog
 
-# 检查 App、动画图集、架构和签名
 ./scripts/verify_assets.sh
-
-# 预览安装位置，不修改文件
 ./scripts/install.sh --target desktop --dry-run
-
-# 安装到 ~/Applications/妹妹.app
 ./scripts/install.sh --target desktop --install
-
-# 启动妹妹
 open "$HOME/Applications/妹妹.app"
 ```
 
-启动后，macOS 菜单栏会出现一个爪印，可以：
+启动后，macOS 菜单栏会出现爪印。妹妹不会自动加入开机启动项。
 
-- 叫妹妹过来
-- 和妹妹玩
-- 指定妹妹歪头、打滚、等待、开机启动或一脸期待
-- 让妹妹讲冷笑话
-- 开启或退出观影模式
-- 暂停散步
-- 隐藏妹妹
-- 退出妹妹
+### 怎么和妹妹互动？
 
-App 不会自动加入开机启动项。需要完全关闭时，请从爪印菜单选择「退出妹妹」。
+| 你的操作 | 妹妹的反应 |
+| --- | --- |
+| 单击妹妹 | 随机播放歪头、打滚或一脸期待等轻松动作 |
+| 双击妹妹 | 用桌面对话气泡讲一个本地冷笑话 |
+| 在她身上来回移动鼠标 | 识别为抚摸，播放“一脸期待／靠近你” |
+| 向上拖动 | 跟随鼠标播放“一脸期待／靠近你”，松手后自然落下 |
+| 放到屏幕底部角落 | 5 分钟没人理她后躲进边框 |
+| 鼠标移到边框里露出的部分 | 从边框跳出来，继续停在原来的桌角 |
+| 右键妹妹 | 可以选择「暂时退出妹妹」 |
+| 点击菜单栏爪印 | 叫她过来、指定动作、讲笑话、暂停、隐藏、观影模式或退出 |
 
-也可以把鼠标放在妹妹身上，右键选择「暂时退出妹妹」。这只会关闭 App，不会卸载；想念她时再打开 `~/Applications/妹妹.app` 即可。
+「暂时退出」只会关闭 App，不会卸载。想让妹妹回来时，再打开 `~/Applications/妹妹.app`。
 
-### 更新已经安装的妹妹
+### 她每天会做什么？
 
-公开安装器不会静默覆盖旧版本。确认更新后运行：
+- 大部分时间安静休息，普通自动动作之间会留出 `10–22 秒`。
+- 3 分钟没有直接互动后，连续表演：**向左走 → 歪头杀 → 打滚 → 向右走**。
+- 电脑正在使用时，大约每 `5–10 分钟`自然打滚、翻肚皮一次。
+- 每次打滚约 `8.6 秒`，最后翻着肚皮停留 `4 秒`。
+- 只在 `08:30–09:00`、`12:00–12:30`、`19:00–19:30`吃饭，不会频繁加餐。
+- 冷笑话可以偶尔自动出现，也可以双击立即触发。
 
-```bash
-./scripts/install.sh --target desktop --install --replace
-./scripts/verify_assets.sh --installed desktop
-```
+### 休息和喝水提醒
 
-对公开安装，`--replace` 会先把旧版本移动为带时间戳的同级备份，再安装新版。
+妹妹每小时检查一次最近 5 分钟内是否仍有电脑操作。确认你正在工作时，她会用桌面对话气泡提醒你起身活动 2–5 分钟，并喝几口水。
 
-### 桌面版、Codex 版或同时安装
+- 气泡 `10 秒`后自动消失，不会一直挡在桌面上。
+- 正在打字时，会等停止输入约 `3 秒`后再出现。
+- 电脑闲置、妹妹暂停或隐藏、前台全屏、观影模式开启时，本轮提醒会跳过。
+- 如果提醒前妹妹藏在边框里，提醒结束后会回到边框。
 
-| 模式 | 妹妹出现在哪里 | 适合什么情况 |
-| --- | --- | --- |
-| macOS 桌面 App | Mac 桌面 | 散步、玩耍、冷笑话，以及长时间工作时提醒休息和喝水 |
-| Codex v2 宠物 | Codex 界面 | 让动画跟随 Codex 的任务状态变化 |
-| 同时安装 | 桌面和 Codex | 希望在两个环境中使用同一只妹妹 |
+### 不挡工作，也不打扰看剧
 
-只安装 Codex 宠物：
+- 打字时自动隐藏，停止输入约 3 秒后再回来。
+- 前台窗口全屏时自动隐藏。
+- Apple TV、QuickTime Player、VLC、IINA 等播放器位于前台时自动隐藏。
+- 浏览器窗口化看剧时，可从爪印菜单手动开启「观影模式」。
+
+### 仓库里有什么？
+
+| 内容 | 用途 |
+| --- | --- |
+| macOS 桌面 App | 使用最新版真实小狗动作，负责散步、互动、提醒和隐藏 |
+| Codex v2 宠物 | 独立的 `8 × 11` 动画图集，让宠物动作跟随 Codex 任务状态 |
+| Codex Skill | 安装、检查、重新构建或恢复妹妹的说明与脚本 |
+
+桌面 App 使用新的真实小狗图集；Codex v2 图集只用于 Codex 兼容，不会在桌面动作中突然切回旧版妹妹。
+
+只安装 Codex 版：
 
 ```bash
 ./scripts/install.sh --target codex --dry-run
 ./scripts/install.sh --target codex --install
 ```
 
-同时安装两个版本：
+同时安装桌面版和 Codex 版：
 
 ```bash
 ./scripts/install.sh --target all --dry-run
 ./scripts/install.sh --target all --install
 ```
 
-### 安装 Codex Skill
-
-安装 Skill 后，可以让 Codex 安装、检查、恢复或重新构建妹妹。
+安装 Codex Skill：
 
 ```bash
 npx -y skills add https://github.com/ielcharme/desktop-pet-dog
 ```
 
-调用示例：
+### 更新已经安装的妹妹
 
-```text
-使用 $meteor-meimei-pet，把妹妹安装成 macOS 桌面宠物并启动。
-使用 $meteor-meimei-pet，把妹妹安装成我的 Codex 宠物。
-使用 $meteor-meimei-pet，同时安装桌面版和 Codex 版妹妹。
-使用 $meteor-meimei-pet，检查妹妹的资源是否完整。
+安装器不会静默覆盖旧 App。确定更新时运行：
+
+```bash
+./scripts/install.sh --target desktop --install --replace
+./scripts/verify_assets.sh --installed desktop
 ```
 
-Skill 会先验证资源，并在写入仓库外的位置之前显示实际安装目标。
+公开安装器会先把旧版本移动成带时间戳的同级备份，再安装新版。
 
-### 大小与动画
+### 尺寸和流畅度
 
-桌面 App 的待机尺寸仍是仓库同款的小尺寸：宽 `97 px`，高度按原始 `192:208` 比例计算。向左走、向右走和打滚都平滑放大到 `1.5 倍`，并继续以底部中央为锚点，保证全身完整。App 同时禁止重复运行；再次打开妹妹时，会继续使用屏幕上唯一的那一只。
+- 待机宽度保持小尺寸 `97 px`。
+- 左右走路和打滚为 `1.5 倍`，以底部中央为锚点，完整显示身体。
+- 8 个真实小狗动作，每个动作 `16 帧`。
+- 桌面无损图集为 `6144 × 3328`，单格 `384 × 416`。
+- App 以 `60 Hz`刷新，相邻帧使用保持透明度的缓动混合。
+- 每次换动作先完整展示首尾姿势，再用 `0.62 秒`衔接上一动作尾帧和下一动作首帧。
+- 左右走路加入基线跟踪和屏幕像素对齐，减少小尺寸下的抖动。
+- 向右走原素材的尾巴被画面截断；这里只使用向左走素材中的真实尾巴镜像，逐帧补齐缺失区域。
 
-- 向左走和向右走保留各自素材中的身体动作。由于成片8每一帧都截断了尾巴，程序只使用成片7中真实尾巴的镜像画面，逐帧补齐成片8缺失的尾巴。
-- 左右走路升级为 16 个源视频采样帧，以 `10.0 fps` 播放，并继续使用基线跟踪和屏幕像素对齐；总时长没有加快。
-- 真实等待动作升级为 16 帧、`2.8 fps`；其他非步行动作同样增加帧数，但保持原来的松弛时长。
-- 八个真实狗狗动作全部升级为每个 16 帧，放在单独的无损 WebP 桌面图集中。图集尺寸为 `6144×3328`，每格 `384×416`。App 以 `60 Hz` 刷新，只在每个帧间隔最后 `42%` 使用透明度恒定的缓动合成，减轻跳帧，同时避免妹妹忽明忽暗或长时间出现重影。已验证的 Codex `8×11` 图集保持不变。
-- 单次动作会在第 1 帧和最后 1 帧短暂停留，不会在结束时突然跳回开头；换动作时再用 `0.62 秒`从上一动作尾帧平滑过渡到下一动作首帧。
-- 自动散步和玩耍会少很多，多数判断之间会先待机 `10–22 秒`，整体更像一只安静生活在屏幕上的小狗。
+### 隐私
 
-<details>
-<summary>查看八个桌面动作预览</summary>
+- 不联网，不调用在线 AI，没有遥测、广告、麦克风、摄像头或屏幕录制。
+- 不读取 Codex 对话、浏览器页面、账号、凭据或具体按键内容。
+- 只读取距离上次操作的时间、前台 App 标识和窗口尺寸，用于提醒和防打扰。
+- 不申请辅助功能权限，也不自动创建开机启动项。
 
-| 歪头杀 | 吃饭 | 打滚 | 等待 |
-| --- | --- | --- | --- |
-| ![妹妹歪头](assets/desktop-preview/head-tilt.gif) | ![妹妹吃饭](assets/desktop-preview/eating.gif) | ![妹妹打滚](assets/desktop-preview/roll.gif) | ![妹妹等待](assets/desktop-preview/waiting.gif) |
-
-| 开机启动 | 向左走 | 向右走 | 一脸期待 |
-| --- | --- | --- | --- |
-| ![妹妹开机启动](assets/desktop-preview/startup.gif) | ![妹妹向左走](assets/desktop-preview/walk-left.gif) | ![妹妹向右走](assets/desktop-preview/walk-right.gif) | ![妹妹一脸期待](assets/desktop-preview/expectant.gif) |
-
-原始 MP4 同时提供最终的真实狗狗画面和动作。程序会逐帧去掉绿幕，再存入 2 倍分辨率的无损桌面图集，不进行第二次有损视频编码；成片8缺失的尾巴在本机使用成片7的真实尾巴素材补齐，没有调用在线生成服务。App 不会上传或打包原视频。
-
-![向右走尾巴补全检查图](assets/desktop-preview/walk-right-tail-completion.png)
-
-</details>
-
-<details>
-<summary>查看妹妹的完整动画图集</summary>
-
-![妹妹完整动画图集](assets/pet/contact-sheet.png)
-
-</details>
-
-### 隐私与安全
-
-妹妹完全在本机运行：
-
-- 不联网，不调用在线 AI，没有遥测或广告。
-- 不读取 Codex 对话、浏览器页面、屏幕画面、账户或凭据。
-- 不记录具体按键，只读取距离上一次按键或操作过去了多久。
-- 只读取前台 App 标识和窗口尺寸，用于判断全屏与观影状态。
-- 不申请辅助功能、屏幕录制、麦克风或摄像头权限。
-- 不自动创建开机启动项。
-
-浏览器里的非全屏视频无法在不读取页面内容的前提下可靠识别，因此这种情况需要手动开启观影模式。
-
-### 从源码构建
-
-需要 macOS 13 或更高版本，以及 Xcode Command Line Tools。
+### 从源码构建和验证
 
 ```bash
 ./scripts/build_desktop_app.sh
 ./scripts/verify_assets.sh --app dist/妹妹.app
 ```
 
-构建结果位于 `dist/妹妹.app`。构建脚本使用 Cocoa 和 ApplicationServices，并进行本地 ad-hoc 签名；这适合本机使用，但不等于 Apple Developer ID 签名或 Apple 公证。
-
-### 仓库结构
-
-```text
-desktop-pet-dog/
-├── SKILL.md                         # Codex Skill 核心说明
-├── agents/openai.yaml               # Skill 显示信息与默认提示
-├── assets/
-│   ├── pet/                         # Codex v2 图集、清单与 QA 预览
-│   ├── desktop/妹妹.app.zip         # 已构建的 Apple Silicon App 压缩包
-│   └── desktop-source/              # 可审查的 Objective-C 源码
-├── references/asset-contract.md     # 动画、尺寸与行为约束
-└── scripts/
-    ├── install.sh                   # 安装与更新
-    ├── verify_assets.sh             # 资源和 App 校验
-    └── build_desktop_app.sh         # 从源码构建 App
-```
-
-### 常见问题
-
-#### 妹妹真的不需要喂养和抚摸吗？
-
-是的。项目没有饥饿值、亲密度或每日任务。点击和抚摸只是可选互动，不会影响她的生命。
-
-#### “永久生命”是什么意思？
-
-这是妹妹的设定：她不会因为时间、没有食物或缺少关注而衰老和死亡。只要 App 还在，你随时可以再次启动她。
-
-#### 休息和喝水提醒会一直留在屏幕上吗？
-
-不会。长时间工作时，桌面气泡每小时最多出现一次，并在 10 秒后自动关闭。电脑闲置或观影时不会提醒。
-
-#### 为什么安装 Skill 后，桌面上没有妹妹？
-
-Skill 是给 Codex 使用的指令和资源包。还需要另外安装并启动桌面 App。
-
-#### 支持 Intel Mac 或 Windows 吗？
-
-当前预编译 App 只支持 Apple Silicon `arm64`。Codex 宠物图集本身不依赖桌面 App。
+构建结果为 `dist/妹妹.app`，使用本地 ad-hoc 签名；这不等于 Apple Developer ID 签名或 Apple 公证。
 
 ### 授权说明
 
