@@ -105,7 +105,7 @@ verify_app() {
   version="$(/usr/bin/plutil -extract CFBundleShortVersionString raw -o - "$plist")"
   architecture="$(/usr/bin/file "$executable")"
   [[ "$bundle_id" == "com.lucie.meteor-meimei" ]] || { echo "Unexpected bundle id: $bundle_id" >&2; return 1; }
-  [[ "$version" == "3.1" ]] || { echo "Unexpected app version: $version" >&2; return 1; }
+  [[ "$version" == "3.2" ]] || { echo "Unexpected app version: $version" >&2; return 1; }
   single_instance="$(/usr/bin/plutil -extract LSMultipleInstancesProhibited raw -o - "$plist")"
   [[ "$single_instance" == "true" ]] || { echo "Desktop app does not prohibit multiple instances." >&2; return 1; }
   [[ "$architecture" == *"arm64"* ]] || { echo "Desktop app is not arm64: $architecture" >&2; return 1; }
@@ -135,7 +135,7 @@ verify_app() {
     "temporal_compositing=plus-lighter-weighted-sum" "temporal_blend_window=0.42"
     "illustrated_fallback=false" "action_transition=tail-to-head-crossfade" "transition_seconds=0.62"
     "endpoint_completion=entry-hold-exit-hold-clamped-last-frame"
-    "roll_exit_hold_seconds=2.2" "roll_action_duration_seconds=6.76"
+    "roll_exit_hold_seconds=4.0" "roll_action_duration_seconds=8.56"
     "double_click=cold-joke" "petting=expectant" "petting_distance_px=84" "petting_cooldown_seconds=12"
     "meal_trigger=scheduled-only" "meal_schedule_local=08:30,12:00,19:00" "meal_duration_seconds=1800"
     "automatic_behavior=calm" "automatic_roll=periodic-and-idle-routine"
